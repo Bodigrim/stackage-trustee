@@ -1,0 +1,36 @@
+cabal-version:   3.0
+name:            stackage-trustee
+version:         0.1.0.0
+license:         BSD-3-Clause
+license-file:    LICENSE
+maintainer:      andrew.lelechenko@gmail.com
+author:          Bodigrim
+category:        Development
+build-type:      Simple
+extra-doc-files: README.md
+
+executable stackage-trustee
+    main-is:          Main.hs
+    hs-source-dirs:   app
+    other-modules:
+        Log
+        RevDeps
+        Index
+
+    default-language: GHC2021
+    ghc-options:      -Wall
+    build-depends:
+        aeson,
+        base,
+        bytestring,
+        cabal-install-parsers,
+        Cabal-syntax,
+        containers,
+        directory,
+        process,
+        req,
+        tagsoup,
+        temporary,
+        text,
+        vector,
+        yaml,
