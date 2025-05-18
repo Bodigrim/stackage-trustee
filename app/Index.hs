@@ -3,24 +3,24 @@
 
 module Index where
 
+import Cabal.Config
+import Cabal.Index
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Text (Text)
 import Data.Text qualified as T
-
-import Cabal.Config
-import Cabal.Index
+import Distribution.Client.Config (loadConfig, savedGlobalFlags)
+import Distribution.Client.GlobalFlags (globalCacheDir)
+import Distribution.Simple.Flag (fromFlag)
 import Distribution.Types.PackageName
 import Distribution.Types.Version
+import System.FilePath ((</>))
 
 readIndex :: IO (Map PackageName PackageInfo)
 readIndex = do
-  cfg <- readConfig
-  indexPath <-
-    maybe
-      (error "Cannot find 01.index.tar")
-      pure
-      (cfgRepoIndex cfg hackageHaskellOrg)
+  cnf <- loadConfig minBound mempty
+  let cacheDir = fromFlag $ globalCacheDir $ savedGlobalFlags cnf
+      indexPath = cacheDir </> hackageHaskellOrg </> "01-index.tar"
   indexMetadata indexPath Nothing
 
 elaborateVersion :: Map PackageName PackageInfo -> Text -> Text
